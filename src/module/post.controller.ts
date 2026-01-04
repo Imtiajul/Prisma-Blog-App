@@ -1,7 +1,6 @@
 import {Request, Response } from "express";
 import { postService } from "./post.service";
 
-
 const createPost = async (req: Request, res: Response) => {
     // console.log(req, res);
     try {
