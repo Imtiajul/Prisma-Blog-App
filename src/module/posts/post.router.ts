@@ -4,7 +4,9 @@ import auth, { UserRole } from "../../middleware/auth";
 
 const router = Router();
 
-router.post("/", auth(UserRole.ADMIN), postController.createPost);
+router.get("/", postController.getAllPost);
+
+router.post("/", auth(UserRole.USER), postController.createPost);
 
 
 

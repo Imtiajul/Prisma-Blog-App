@@ -19,23 +19,23 @@ export const auth = betterAuth({
     }),
     trustedOrigins: [process.env.APP_URL!],
     user: {
-        additionalFields: {
-            role: {
-                type: "string",
-                defaultValue: "USER",
-                required: false
-            },
-            phone: {
-                type: "string",
-                required: false
-            },
-            status: {
-                type: "string",
-                defaultValue: "ACTIVE",
-                required: false
-            }
-        }
-    },
+    additionalFields: {
+      role: {
+        type: "string",
+        defaultValue: "USER",
+        required: false
+      },
+      phone: {
+        type: "string",
+        required: false
+      },
+      status: {
+        type: "string",
+        defaultValue: "ACTIVE",
+        required: false
+      }
+    }
+  },
     emailAndPassword: {
         enabled: true,
         autoSignIn: false,
@@ -43,14 +43,15 @@ export const auth = betterAuth({
     },
     emailVerification: {
         sendOnSignUp: true,
-        autoSignInAfterVerification: true,
+        autoSignInAfterVerification: false,
         sendVerificationEmail: async ({ user, url, token }, request) => {
+          // console.log("***** Email Verification");
             try {
                 // console.log({user, url, token})
             const verificationUrl = `${process.env.APP_URL}/verify-email?token=${token}`
             const info = await transporter.sendMail({
-                from: '"Maddison Foo Koch" <imtiajul@jmail.com>',
-                to: user.email,
+                from: '"Prisma Blog" <imtiajul@jmail.com>',
+                to: "imtiaj.csm@gmail.com",
                 subject: "Please Verify Your Email",
                 text: "Hello world?", // Plain-text version of the message
                 html: `<!DOCTYPE html>

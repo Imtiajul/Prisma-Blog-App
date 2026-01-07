@@ -14,8 +14,9 @@ npx prisma migrate dev --name init
 npx prisma generate
 
 
-
 pnpm add better-auth
+npx prisma generate
+npx prisma migrate dev
 
 BETTER_AUTH_SECRET=VXy3RIZgAnQVxnu22WIcnBaN9rIuT60A
 BETTER_AUTH_URL=http://localhost:3000 # Base URL of your app
