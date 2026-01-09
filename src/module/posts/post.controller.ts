@@ -50,7 +50,7 @@ const getPostById = async (req: Request, res: Response) => {
 const createPost = async (req: Request, res: Response) => {
     // console.log(req, res);
     try {
-        console.log(req.user, 'user');
+        // console.log(req.user, 'user');
         const user = req.user;
         if (!user) {
             return res.status(400).json({

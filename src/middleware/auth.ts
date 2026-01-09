@@ -26,7 +26,7 @@ const auth = (...roles: UserRole[]) => {
         const session = await betterAuth.api.getSession({
             headers: req.headers as any,
         });
-        console.log(session);
+        // console.log(session);
 
         if (!session) {
             return res.status(401).json({
