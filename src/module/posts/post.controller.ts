@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { postService } from "./post.service";
 import { success } from "better-auth/*";
 import { PostStatus } from "../../../generated/prisma/enums";
+import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 
 const getAllPost = async (req: Request, res: Response) => {
     try {
@@ -16,12 +17,13 @@ const getAllPost = async (req: Request, res: Response) => {
             : undefined;
 
         const status = req.query.status as PostStatus | undefined;
-
         const authorId = req.query.authorId as string | undefined;
+
+        const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
 
         // console.log(typeof(req.query.isFeatured))
         const searchString = typeof search === 'string' ? search : undefined;
-        const result = await postService.getAllPost({ search: searchString, tags, isFeatured, status, authorId});
+        const result = await postService.getAllPost({ search: searchString, tags, isFeatured, status, authorId, page, limit, skip, sortBy, sortOrder });
 
         res.status(200).json(result);
     } catch (error) {
@@ -32,7 +34,19 @@ const getAllPost = async (req: Request, res: Response) => {
         })
     }
 }
-
+const getPostById = async (req: Request, res: Response) => {
+    try {
+        const { postId } = req.params;
+        const result = await postService.getPostById(postId);
+        res.status(200).json(result);
+    } catch (error:any) {
+        res.status(400).json({
+            success: false,
+            error: "Unsuccessful error in fetching post data",
+            details: error.message
+        })
+    }
+}
 const createPost = async (req: Request, res: Response) => {
     // console.log(req, res);
     try {
@@ -54,5 +68,5 @@ const createPost = async (req: Request, res: Response) => {
 }
 
 export const postController = {
-    createPost, getAllPost
+    createPost, getAllPost, getPostById
 }
