@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { postService } from "./post.service";
 import { success } from "better-auth/*";
 import { PostStatus } from "../../../generated/prisma/enums";
@@ -68,7 +68,7 @@ const getMyPosts = async (req: Request, res: Response) => {
         })
     }
 }
-const createPost = async (req: Request, res: Response) => {
+const createPost = async (req: Request, res: Response, next: NextFunction) => {
     // console.log(req, res);
     try {
         // console.log(req.user, 'user');
@@ -81,13 +81,14 @@ const createPost = async (req: Request, res: Response) => {
         const result = await postService.createPost(req.body, user.id as string);
         res.status(201).json({ result });
     } catch (error) {
-        res.status(400).json({
-            error: "Post creation not successful",
-            details: error,
-        })
+        next(error);
+        // res.status(400).json({
+        //     error: "Post creation is not successful",
+        //     details: error,
+        // })
     }
 }
-const updatePost = async (req: Request, res: Response) => {
+const updatePost = async (req: Request, res: Response, next: NextFunction) => {
     // console.log(req, res);
     try {
         // console.log(req.user, 'user');
@@ -101,10 +102,11 @@ const updatePost = async (req: Request, res: Response) => {
         const result = await postService.updatePost(postId, req.body, user.id as string, isAdmin);
         res.status(201).json({ result });
     } catch (error: any) {
-        res.status(400).json({
-            error: "Post update failed!!",
-            details: error.message,
-        })
+        next(error);
+        // res.status(400).json({
+        //     error: "Post update failed!!",
+        //     details: error.message,
+        // })
     }
 }
 const deletePost = async (req: Request, res: Response) => {
